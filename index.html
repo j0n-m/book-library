@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Library</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="grid-container">
+    <header>
+      <h1>Library</h1>
+      <a class="btn toggle-sidebar-btn">Add Book</a>
+    </header>
+    <main>
+      <div class="cards">
+        <div class="card">
+          <div class="top">
+            <h2>Title</h2>
+            <h2>Author</h2>
+            <h2>Pages 34</h2>
+          </div>
+          <div class="bottom">
+            <a class="btn --btn-inverse-outline read">Not Read</a>
+            <a class="btn --btn-inverse-outline">Delete</a>
+          </div>
+
+
+        </div>
+
+        <div class="card">
+          <div class="top">
+            <h2 class="card-label-title">Title</h2>
+            <h2 class="card-label-author">Author</h2>
+            <h2 class="card-label-pages">Pages 34</h2>
+          </div>
+          <div class="bottom">
+            <a class="btn --btn-inverse-outline not-read">Not Read</a>
+            <a class="btn --btn-inverse-outline">Delete</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="sidebar">
+
+      <form method="get" id="book-form">
+
+        <div class="input-field">
+          <label for="book-title" class="form-label">Title</label>
+          <input type="text" id="book-title" name="book-title" required>
+        </div>
+
+        <div class="input-field">
+          <label for="book-author" class="form-label">Author</label>
+          <input type="text" id="book-author" name="book-author" required>
+        </div>
+
+
+        <div class="input-field">
+          <label for="book-pages" class="form-label">Total Pages</label>
+          <input type="number" id="book-pages" name="book-pages" required min="1" max="1000">
+        </div>
+
+        <div class="input-field">
+          <input type="checkbox" id="book-complete" name="book-complete">
+          <label for="book-complete" class="inline-label">Book Completed</label>
+        </div>
+        <div class="input-field">
+          <input type="submit" form="book-form" id="form-submit-btn">
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
