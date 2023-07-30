@@ -9,6 +9,9 @@ function Book(title, author, pages, bookComplete) {
   this.pages = pages;
   this.bookComplete = bookComplete;
 }
+Book.prototype.toggleReadStatus = function () {
+  this.bookComplete = !this.bookComplete;
+}
 
 loadLibrary();
 console.log(myLibrary);
@@ -78,6 +81,7 @@ function addCard(title, author, pages, isComplete) {
 
   const card = document.createElement('div');
   card.classList.add('card');
+  card.setAttribute('data-library-index', myLibrary.length - 1);
   card.appendChild(topCardSection);
   card.appendChild(bottomCardSection);
 
@@ -113,6 +117,10 @@ function loadLibrary() {
 }
 function toggleRead(e) {
   let readBtnElement = e.target;
+  let cardElement = e.target.parentElement.parentElement
+  const bookIndex = cardElement.attributes['data-library-index'].value;
+
+  myLibrary[bookIndex].toggleReadStatus();
   readBtnElement.classList.toggle('read');
   if (readBtnElement.textContent == "Read") {
     readBtnElement.textContent = "Not Read";
@@ -122,15 +130,7 @@ function toggleRead(e) {
 }
 function deleteCard(e) {
   const card = e.srcElement.parentElement.parentElement;
-  const bookTitle = e.srcElement.parentElement.parentElement.childNodes[0].childNodes[0].textContent;
-
-  const book = myLibrary.filter(book => {
-    return (book.title.includes(bookTitle));
-  });
-
-  const myLibrary_index = myLibrary.findIndex(bookIndex => {
-    return bookIndex.title == bookTitle;
-  });
+  const myLibrary_index = card.attributes['data-library-index'].value;
 
   myLibrary.splice(myLibrary_index, 1);
 
