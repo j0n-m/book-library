@@ -1,14 +1,17 @@
 const toggleSidebarBtn = document.querySelector('.toggle-sidebar-btn');
 const formSubmitBtn = document.querySelector('#book-form');
 const sidebar = document.querySelector('.sidebar');
-const myLibrary = [];
+const myLibrary = [new Book('moby dick', 'author', 400, true)];
 
+function Book(title, author, pages, bookComplete) {
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.bookComplete = bookComplete;
+}
 
-
-
-
-
-
+loadLibrary();
+console.log(myLibrary);
 
 toggleSidebarBtn.addEventListener('click', toggleSideBar);
 formSubmitBtn.addEventListener('submit', (e) => {
@@ -56,19 +59,16 @@ function addCard(title, author, pages, isComplete) {
 
   const readButton = document.createElement('a');
   readButton.classList.add('btn');
-  isComplete = (isComplete == true) ? "read" : "not-read";
-  readButton.classList.add(isComplete);
-
-  if (isComplete) {
-    isComplete = "Read";
-  } else {
-    isComplete = "Not Read";
+  readButton.classList.add('--btn-inverse-outline');
+  readButton.classList.add('toggle-read-btn');
+  readButton.textContent = 'Not Read';
+  if (isComplete == true) {
+    readButton.classList.add('read');
+    readButton.textContent = 'Read';
   }
 
-  readButton.textContent = isComplete;
-
   const deleteButton = document.createElement('a');
-  deleteButton.classList.add('btn');
+  deleteButton.classList.add('btn', '--btn-inverse-outline', 'delete-btn');
   deleteButton.textContent = "Delete";
 
   const bottomCardSection = document.createElement('div');
@@ -82,20 +82,62 @@ function addCard(title, author, pages, isComplete) {
   card.appendChild(bottomCardSection);
 
   container.appendChild(card);
+
+  let toggleReadBtn = document.querySelectorAll('.toggle-read-btn');
+  let deleteBtn = document.querySelectorAll('.delete-btn');
+
+
+  toggleReadBtn.forEach(readBtn => {
+    readBtn.addEventListener('click', toggleRead);
+  })
+  deleteBtn.forEach(deleteBtn => {
+    deleteBtn.addEventListener('click', deleteCard);
+  })
+
 }
 function addToLibrary(bookTitle, bookAuthor, bookPages, bookComplete) {
-  myLibrary.push({
-    title: bookTitle,
-    author: bookAuthor,
-    pages: bookPages,
-    isComplete: bookComplete,
+  myLibrary.push(new Book(bookTitle, bookAuthor, bookPages, bookComplete));
+  console.log(myLibrary);
+
+
+}
+function loadLibrary() {
+  if (!myLibrary.length) return;
+  let bookProperties = [];
+  myLibrary.forEach((book) => {
+    for (let property in book) {
+      bookProperties.push(book[property]);
+    }
+  })
+  addCard(...bookProperties);
+}
+function toggleRead(e) {
+  let readBtnElement = e.target;
+  readBtnElement.classList.toggle('read');
+  if (readBtnElement.textContent == "Read") {
+    readBtnElement.textContent = "Not Read";
+  } else {
+    readBtnElement.textContent = "Read";
+  }
+}
+function deleteCard(e) {
+  const card = e.srcElement.parentElement.parentElement;
+  const bookTitle = e.srcElement.parentElement.parentElement.childNodes[0].childNodes[0].textContent;
+
+  const book = myLibrary.filter(book => {
+    return (book.title.includes(bookTitle));
   });
 
-  /*
-  myLibrary.forEach(element =>{
-    for(let prop in element){
-            console.log(`${prop} -> ${element[prop]}`);
-    }
-})
-  */
+  const myLibrary_index = myLibrary.findIndex(bookIndex => {
+    return bookIndex.title == bookTitle;
+  });
+
+  myLibrary.splice(myLibrary_index, 1);
+
+  card.remove();
+
+  console.log(myLibrary);
+
+
+
 }
